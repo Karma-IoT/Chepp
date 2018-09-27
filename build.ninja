@@ -1,0 +1,23 @@
+cc = gcc
+cxx = g++
+ld = g++
+ar = ar
+
+cflags = -g -Iinclude/
+cxxflags = -g -Iinclude/ -std=c++17 -fconcepts
+
+rule cc
+    depfile = $out.d
+    command = $cc -MMD -MF $out.d -o $out -c $cflags $in
+
+rule cxx
+    depfile = $out.d
+    command = $cxx -MMD -MF $out.d -o $out -c $cxxflags $in
+
+rule ar
+    command = $ar rcs $out $in
+    
+rule link
+    command = $ld -o $out $in -lstdc++fs
+
+subninja chest.ninja

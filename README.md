@@ -50,7 +50,7 @@ Build project's specified target
 $ chepp run [-e/--example <example name>]
 ```
 
-If the `-e` flag is set, run the specified target.
+If the `-e` flag is set, run the specified example.
 
 #### Test project
 
@@ -68,39 +68,20 @@ $ shepp upload [-d/--device <device name>] [-t/--type <debug|release|test|exampl
 
 Upload the specified target to device.
 
+These devices are recorded in the `device`  section in configuration.
+
+
+
 ### Global commands
 
-#### Manage remotes
+#### Configure
 
-``` shell
-$ shepp remote ls
-$ shepp remote add <remote name>
-$ shepp remote del <remote name>
-$ shepp remote attr <remote name> <key>=<value>
-```
-
-Remote is the source of `chest`.
-
-Subcommand `ls` will display all remotes.
-Subcommand `add` will add new remote.
-Subcommand `del` will delete existed remote.
-Subcommand `attr` will modify remote's attribute.
-
-#### Refresh index
-
-``` shell
-$ shepp refresh
-```
-
-Refresh local index.
-
-#### Manage dependencies
-
-``` shell
-$ shepp dep update [<chest name>]
-$ shepp dep ls
-$ shepp dep remove <chest name>
-$ shepp dep install <chest name>
+```shell
+$ shepp config ls [<section name>]
+$ shepp config add <section name>
+$ shepp config del <section name> [<key>]
+$ shepp config get <section name> <key>
+$ shepp config set <section name> <key>=<value>
 ```
 
 

@@ -1,0 +1,8 @@
+chest_source_dir = src
+chest_binary_dir = build
+chest_test_dir = test
+
+build $chest_binary_dir/chest.o: cxx $chest_source_dir/chest.cpp
+
+
+build $chest_binary_dir/chest: link $chest_binary_dir/chest.o
