@@ -70,8 +70,6 @@ Upload the specified target to device.
 
 These devices are recorded in the `device`  section in configuration.
 
-
-
 ### Global commands
 
 #### Configure
