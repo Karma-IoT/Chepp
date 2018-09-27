@@ -18,13 +18,9 @@ void print_help() {
     cout << "usage: chepp [--version] [--help] <command> [<args>]" << endl;
     auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
         / "bin" / "_chest" / "command";
-    for (auto& p: filesystem::directory_iterator(sysroot_subcommand)) {
-        cout << "Subcommand in " << p.path().filename() << "group:" << endl;
-        for (auto& c: filesystem::directory_iterator(p)) {
-            cout << "\t";
-            system((c.path().string() + " --brief").c_str());
-        }
-    }
+	for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
+		system((c.path().string() + " --brief").c_str());
+	}
 }
 
 void print_version() {
@@ -51,7 +47,7 @@ int main(int argc, char *argv[]) {
             break;
         }
     }
-    for (int i = command.size(); i != argc; i ++) {
+    for (int i = command.size() + 1; i != argc; i ++) {
         subcommand.push_back(string(argv[i]));
     }
     if (argc == 1) {
@@ -60,23 +56,28 @@ int main(int argc, char *argv[]) {
     for (auto& p: command) {
         if (p == "--version" || p == "-v") {
             print_version();
+			break;
         } else if (p == "--help" || p == "-h") {
             print_help();
+			break;
         }
     }
     // Find command and invoke
-    auto subc = filesystem::path(getenv("CHEST_SYSROOT"))
-        / "bin" / "_chest" / "command" / subcommand[0];
-    if (! filesystem::exists(subc)) {
-        cerr << "Subcommand does not exist" << endl;
-        print_help();
-    } else {
-        auto commstr = subc.string();
-        for (auto& p: subcommand) {
-            commstr.append(" ");
-            commstr.append(p);
-        }
-        system(commstr.c_str());
-    }
+	
+	if (!subcommand.empty()) {
+		auto subc = filesystem::path(getenv("CHEST_SYSROOT"))
+			/ "bin" / "_chest" / "command" / subcommand[0];
+		if (! filesystem::exists(subc)) {
+			cerr << "Subcommand does not exist" << endl;
+			print_help();
+		} else {
+			auto commstr = subc.string();
+			for (auto p = subcommand.cbegin() + 1; p != subcommand.cend(); p++) {
+				commstr.append(" ");
+				commstr.append(*p);
+			}
+			system(commstr.c_str());
+		}
+	}
     return 0;
 }
