@@ -1,10 +1,13 @@
 # Chepp
 > [Chest](https://github.com/Karma-IoT/Chest)'s C++ implementation
 
+> Chepp is a radical project. It use the most new standard and support decentralize sources.
+
 ## Dependencies
 
 - ninja
 - git
+- gcc < 7.1 (make)
 
 ## Commands
 
