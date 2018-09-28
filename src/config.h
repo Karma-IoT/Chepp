@@ -1,11 +1,13 @@
-#ifndef _PROJECT_H
-#define _PROJECT_H
+#ifndef _CONFIG_H
+#define _CONFIG_H
 
 #include <filesystem>
 #include <string>
 #include <map>
 #include <vector>
 #include <bitset>
+
+#include "chest.h"
 
 using namespace std;
 
@@ -22,16 +24,9 @@ public:
         string name;
         string family;
         string version;
-        string maintainer;
-        string upstream;
-        string platform;
-    };
-    struct chest_t {
-        string name;
-        bitset type;
-        string upstream;
-        string version;
-        filesystem::path local;
+        vector<string maintainer;
+        vector<string> upstream;
+        vector<string> platform;
     };
     struct rule_t {
         string command;
