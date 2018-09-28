@@ -2,7 +2,11 @@ chest_source_dir = src
 chest_binary_dir = build
 chest_test_dir = test
 
-build $chest_binary_dir/chest.o: cxx $chest_source_dir/chest.cpp
+build $chest_binary_dir/chepp.o: cxx $chest_source_dir/chepp.cpp
+build $chest_binary_dir/init.o: cxx $chest_source_dir/init.cpp
+build $chest_binary_dir/new.o: cxx $chest_source_dir/new.cpp
 
 
-build $chest_binary_dir/chest: link $chest_binary_dir/chest.o
+build $chest_binary_dir/chepp: link $chest_binary_dir/chepp.o
+build $chest_binary_dir/bin/_chest/command/init: link $chest_binary_dir/init.o
+build $chest_binary_dir/bin/_chest/command/new: link $chest_binary_dir/new.o

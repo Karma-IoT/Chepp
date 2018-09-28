@@ -1,6 +1,8 @@
 #ifndef _CHEST_H
 #define _CHEST_H
 
+namespace chepp {
+
 class chest {
 public:
     chest();
@@ -27,5 +29,7 @@ private:
     filesystem::path source;
     map<string,filesystem::path> binary;
 };
+
+}
 
 #endif

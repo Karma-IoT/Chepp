@@ -4,36 +4,35 @@
 #include <string>
 #include <filesystem>
 
+#include "utils.h"
+
 using namespace std;
+using namespace chepp;
 
 void check_system() {
     auto sysroot = getenv("CHEST_SYSROOT");
     if(!sysroot) {
-        cerr << "Environmental variable `CHEST_SYSROOT' must be set!" << endl;
+        cerr << "Error! Environmental variable `CHEST_SYSROOT' must be set!" << endl;
         exit(EXIT_FAILURE);
     }
 }
 
 void print_help() {
-    cout << "usage: chepp [--version] [--help] <command> [<args>]" << endl;
+    cout << "usage: chepp [-v|--version] [-h|--help] <command> [<args>]" << endl;
+    cout << endl;
+    cout << "Chest is an universal packages manager." << endl;
+    cout << "Chepp is an implemention for Chest" << endl;
+    cout << endl;
     auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
         / "bin" / "_chest" / "command";
 	for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
 		system((c.path().string() + " --brief").c_str());
 	}
+    cout << endl;
 }
 
 void print_version() {
     cout << "chepp version 0.1.0" << endl;
-}
-
-template <typename Indexable>
-bool is_option(Indexable argv) {
-    if (argv[0] == '-') {
-        return true;
-    } else {
-        return false;
-    }
 }
 
 int main(int argc, char *argv[]) {
@@ -52,6 +51,7 @@ int main(int argc, char *argv[]) {
     }
     if (argc == 1) {
         print_help();
+        return 0;
     }
     for (auto& p: command) {
         if (p == "--version" || p == "-v") {

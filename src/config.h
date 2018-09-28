@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace chest{
+namespace chepp {
 
 class config {
 public:
@@ -24,7 +24,7 @@ public:
         string name;
         string family;
         string version;
-        vector<string maintainer;
+        vector<string> maintainer;
         vector<string> upstream;
         vector<string> platform;
     };
