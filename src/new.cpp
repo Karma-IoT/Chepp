@@ -2,6 +2,9 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <filesystem>
+#include <fstream>
+#include <iomanip>
 
 #include "utils.h"
 
@@ -19,7 +22,7 @@ void print_help() {
     cout << "  -l, --list    list all file template class." << endl;
     cout << "  -a, --add     add a template." << endl;
     cout << "  -d, --delete  delete a template." << endl;
-    cout << "  -h, --help    this help message." << endl;
+    cout << "  -h, --help    show this help message." << endl;
     cout << "  --brief       brief description." << endl;
     cout << endl;
 }
@@ -29,7 +32,17 @@ void print_brief() {
 }
 
 void list_templates() {
-    
+    cout << "All available templates:" << endl;
+    auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
+        "lib" / "chest" / "templates";
+    for (auto& c: filesystem::directory_iterator(templates_path)) {
+        ifstream ifs(c.path());
+        string commit;
+        getline(ifs,commit);
+        cout  << "  " << left << setw(20) << c.path().filename().string() << commit.erase(0,1) << endl;
+        ifs.close();
+    }
+    cout << endl;
 }
 
 struct args_t {
@@ -43,7 +56,7 @@ struct args_t {
 
 void check_args(const args_t &args) {
     if(args.add & args.del) {
-        cout << "Error! Add and delete cannot be set at the same time." << endl;
+        cerr << "Error! Add and delete cannot be set at the same time." << endl;
         exit(EXIT_FAILURE);
     }
 }
@@ -73,13 +86,51 @@ int main(int argc, char *argv[]) {
             } else if (option == "--brief") {
                 print_brief();
                 return 0;
+            } else {
+                cerr << "Error! Option " << argv[i] << " does not exist." << endl;
+                exit(EXIT_FAILURE);
             }
         } else {
             args.name = string(argv[i]);
         }
     }
     check_args(args);
-    cout << args.name << endl;
-    // call init project.
+	if( args.del ) {
+        auto path = filesystem::path(getenv("CHEST_SYSROOT")) /
+            "lib" / "chest" / "templates" / args.name;
+        if(filesystem::exists(path)) {
+            remove(path);
+            return 0;
+        } else {
+            cerr << "Error! Template does not exist." << endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+    
+	if( args.add ) {
+        auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
+            "lib" / "chest" / "templates" / args.name;
+        auto origin = filesystem::path(args.name);
+        if(filesystem::exists(target)) {
+            cout << "Error! Template already exists." << endl;
+            exit(EXIT_FAILURE);
+        } else {
+            filesystem::copy(origin,target);
+        }
+    }
+    
+    if( args.type != "") {
+        if(args.cls == "") 
+            args.cls = "default";
+        auto comexec = filesystem::path(getenv("CHEST_SYSROOT")) /
+            "bin/_chest/new_type" / args.type;
+            
+        if(!filesystem::exists(comexec)) {
+            cout << "Error! Template type does not exist." << endl;
+            exit(EXIT_FAILURE);
+        }
+        auto command = comexec.string() + (" " + args.cls + " " + args.name);
+        system(command.c_str());
+    }
     return 0;
 }

@@ -20,14 +20,6 @@ public:
     config(const config&) = default;
     ~config() = default;
 public:
-    struct project_t {
-        string name;
-        string family;
-        string version;
-        vector<string> maintainer;
-        vector<string> upstream;
-        vector<string> platform;
-    };
     struct rule_t {
         string command;
         map<string,string> variable;
@@ -44,7 +36,6 @@ public:
         vector<string> info;
     };
 public:
-    project_t &project();
     // some getter
 public:
     string get_unique_name();
@@ -56,7 +47,7 @@ public:
     void do_init();
 private:
     filesystem::path tpath;
-    project_t project;
+    chest_t project;
     vector<chest_t> chest;
     map<string,rule_t> rule;
     map<string,build_t> build;

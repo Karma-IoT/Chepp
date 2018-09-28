@@ -20,4 +20,7 @@ rule ar
 rule link
     command = $ld -o $out $in -lstdc++fs
 
+rule cp
+    command = cp -r $in $out
+    
 subninja chest.ninja

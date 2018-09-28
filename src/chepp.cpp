@@ -18,16 +18,21 @@ void check_system() {
 }
 
 void print_help() {
-    cout << "usage: chepp [-v|--version] [-h|--help] <command> [<args>]" << endl;
+    cout << "usage: chepp [-v|--version] [-h|--help] <subcommand> [<args>]" << endl;
     cout << endl;
     cout << "Chest is an universal packages manager." << endl;
     cout << "Chepp is an implemention for Chest" << endl;
     cout << endl;
+    cout << "Available subcommands:" << endl;
     auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
         / "bin" / "_chest" / "command";
-	for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
-		system((c.path().string() + " --brief").c_str());
-	}
+    for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
+        system((c.path().string() + " --brief").c_str());
+    }
+    cout << endl;
+    cout << "Available options:" << endl;
+    cout << "  -h, --help      show this help message." << endl;
+    cout << "  -v, --version   version." << endl;
     cout << endl;
 }
 
@@ -70,6 +75,7 @@ int main(int argc, char *argv[]) {
 		if (! filesystem::exists(subc)) {
 			cerr << "Subcommand does not exist" << endl;
 			print_help();
+            exit(EXIT_FAILURE);
 		} else {
 			auto commstr = subc.string();
 			for (auto p = subcommand.cbegin() + 1; p != subcommand.cend(); p++) {
