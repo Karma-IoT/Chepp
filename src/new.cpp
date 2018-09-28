@@ -15,10 +15,12 @@ void print_help() {
     cout << "Create some file(s) from template." << endl;
     cout << endl;
     cout << "  -t, --type    file type." << endl;
-    cout << "  -c, --class   file template class" << endl;
-    cout << "  -l, --list    list all file template class" << endl;
-    cout << "  -a, --add     add a template" << endl;\
-    cout << "  -d, --delete  delete a template" << endl;
+    cout << "  -c, --class   file template class." << endl;
+    cout << "  -l, --list    list all file template class." << endl;
+    cout << "  -a, --add     add a template." << endl;
+    cout << "  -d, --delete  delete a template." << endl;
+    cout << "  -h, --help    this help message." << endl;
+    cout << "  --brief       brief description." << endl;
     cout << endl;
 }
 
