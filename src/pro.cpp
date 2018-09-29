@@ -9,7 +9,8 @@ using namespace chepp;
 
 int main(int argc, char *argv[]) {
     auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "lib/chest/templates" / (string("pro.") + argv[1] + ".toml");
+        "etc/chest/templates" / (string("pro.") + argv[2] + ".toml");
+
     if(!filesystem::exists(target)) {
         cerr << "Error! Template does not exist." << endl;
         exit(EXIT_FAILURE);
@@ -37,6 +38,10 @@ int main(int argc, char *argv[]) {
     cout << "Description: ";
     getline(cin,project.description);
     
+    if(filesystem::exists("chest.toml")) {
+        cerr << "Error! chest.toml already exist." << endl;
+        exit(EXIT_FAILURE);
+    }
     ifstream ifs(target);
     ofstream ofs("chest.toml");
     string buffer;

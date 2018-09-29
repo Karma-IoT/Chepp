@@ -15,7 +15,7 @@ namespace chepp {
 
 class config {
 public:
-    config();
+    config() = default;
     config(const filesystem::path &p);
     config(const config&) = default;
     ~config() = default;

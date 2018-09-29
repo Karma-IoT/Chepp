@@ -124,12 +124,11 @@ int main(int argc, char *argv[]) {
             args.cls = "default";
         auto comexec = filesystem::path(getenv("CHEST_SYSROOT")) /
             "bin/_chest/new_type" / args.type;
-            
         if(!filesystem::exists(comexec)) {
             cout << "Error! Template type does not exist." << endl;
             exit(EXIT_FAILURE);
         }
-        auto command = comexec.string() + (" " + args.cls + " " + args.name);
+        auto command = comexec.string() + (" " +args.type + " " + args.cls + " " + args.name);
         system(command.c_str());
     }
     return 0;

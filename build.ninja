@@ -1,6 +1,6 @@
-cc = gcc-8
-cxx = g++-8
-ld = g++-8
+cc = gcc
+cxx = g++
+ld = g++
 ar = ar
 
 cflags = -g -Iinclude/ -Isrc/
