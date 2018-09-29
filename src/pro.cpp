@@ -3,20 +3,27 @@
 #include <fstream>
 
 #include "chest.h"
+#include "utils.h"
 
 using namespace std;
 using namespace chepp;
 
 int main(int argc, char *argv[]) {
     auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "etc/chest/templates" / (string("pro.") + argv[2] + ".toml");
+        "etc/chest/templates" / ( argv[2] + string(".pro"));
 
     if(!filesystem::exists(target)) {
         cerr << "Error! Template does not exist." << endl;
         exit(EXIT_FAILURE);
     }
     
-    cout << "Use " << target.filename().string() << " to initial project" << endl;
+    if(filesystem::exists("chest.pro")) {
+        cerr << "Error! chest.pro already exist." << endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    cout << "Use " << target.filename().string() << " to initial project." << endl;
+    cout << endl;
     
     chest_t project;
     
@@ -37,27 +44,19 @@ int main(int argc, char *argv[]) {
     
     cout << "Description: ";
     getline(cin,project.description);
-    
-    if(filesystem::exists("chest.toml")) {
-        cerr << "Error! chest.toml already exist." << endl;
-        exit(EXIT_FAILURE);
-    }
     ifstream ifs(target);
-    ofstream ofs("chest.toml");
+    ofstream ofs("chest.pro");
     string buffer;
     while(!ifs.eof()) {
         getline(ifs,buffer);
         auto pos = string::npos;
-        if(!((pos = buffer.find("%name%")) == string::npos)) {
-            buffer.replace(pos,6,"\"" +project.name + "\"");
-        } else if(!((pos = buffer.find("%family%")) == string::npos)) {
-            buffer.replace(pos,8,"\"" +project.family + "\"");
-        } else if(!((pos = buffer.find("%version%")) == string::npos)) {
-            buffer.replace(pos,9,"\"" +project.version + "\"");
-        } else if(!((pos = buffer.find("%description%")) == string::npos)) {
-            buffer.replace(pos,13,"\"" +project.description + "\"");
-        } 
-        ofs << buffer << endl;
+        replace_str(buffer, "%name%", "\"" +project.name + "\"");
+        replace_str(buffer, "%family%", "\"" +project.family + "\"");
+        replace_str(buffer, "%version%", "\"" +project.version + "\"");
+        replace_str(buffer, "%description%", "\"" +project.description + "\"");
+        if (buffer.find("%brief%") == string::npos) {
+            ofs << buffer << endl;
+        }
     }
     return 0;
 }

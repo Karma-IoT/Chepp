@@ -1,4 +1,4 @@
-# chest.toml for default project
+# %brief% chest.toml for default project.
 [project]
 name = %name%
 family = %family%

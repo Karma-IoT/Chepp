@@ -32,11 +32,8 @@ int main(int argc, char *argv[]) {
     while(!ifs.eof()) {
         getline(ifs,buffer);
         auto pos = string::npos;
-        if(!((pos = buffer.find("%project_name%")) == string::npos)) {
-            buffer.replace(pos,14,"\"" +project.name + "\"");
-        } else if(!((pos = buffer.find("%family%")) == string::npos)) {
-            buffer.replace(pos,8,"\"" +project.family + "\"");
-        }
+        replace_str(buffer, "%name%", "\"" +project.name + "\"");
+        
     }
     
     

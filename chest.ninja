@@ -24,6 +24,5 @@ build $chest_binary_dir/bin/_chest/new_type/pro: link $chest_binary_dir/pro.o
 build $chest_binary_dir/bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
 
 
-build $chest_binary_dir/etc/chest/templates/pro.c.toml: cp $chest_etc_dir/templates/pro.c.toml
-build $chest_binary_dir/etc/chest/templates/pro.cxx.toml: cp $chest_etc_dir/templates/pro.cxx.toml
-build $chest_binary_dir/etc/chest/templates/pro.default.toml: cp $chest_etc_dir/templates/pro.default.toml
+build $chest_binary_dir/etc/chest/: cp $chest_etc_dir/templates
+

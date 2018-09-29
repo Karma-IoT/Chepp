@@ -34,12 +34,17 @@ void print_brief() {
 void list_templates() {
     cout << "All available templates:" << endl;
     auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "lib" / "chest" / "templates";
+        "etc" / "chest" / "templates";
+    cout << "  type |   class   | description" << endl;
     for (auto& c: filesystem::directory_iterator(templates_path)) {
         ifstream ifs(c.path());
         string commit;
         getline(ifs,commit);
-        cout  << "  " << left << setw(20) << c.path().filename().string() << commit.erase(0,1) << endl;
+        auto pos = commit.find("%brief%");
+        auto file = c.path();
+        cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
+             << right << setw(11) << file.stem().string() << "|"
+             << commit.erase(0,pos).erase(0,7) << endl;
         ifs.close();
     }
     cout << endl;
@@ -97,7 +102,7 @@ int main(int argc, char *argv[]) {
     check_args(args);
 	if( args.del ) {
         auto path = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "lib" / "chest" / "templates" / args.name;
+            "etc" / "chest" / "templates" / args.name;
         if(filesystem::exists(path)) {
             remove(path);
             return 0;
@@ -109,7 +114,7 @@ int main(int argc, char *argv[]) {
     
 	if( args.add ) {
         auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "lib" / "chest" / "templates" / args.name;
+            "etc" / "chest" / "templates" / args.name;
         auto origin = filesystem::path(args.name);
         if(filesystem::exists(target)) {
             cout << "Error! Template already exists." << endl;
