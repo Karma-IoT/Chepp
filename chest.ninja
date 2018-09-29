@@ -2,6 +2,9 @@ chest_source_dir = src
 chest_binary_dir = build
 chest_etc_dir = etc
 chest_test_dir = test
+sysroot = ~/.chest
+sysroot_bin = $sysroot/bin
+sysroot_etc = $sysroot/etc
 
 # build object
 build $chest_binary_dir/chepp.o: cxx $chest_source_dir/chepp.cpp
@@ -15,14 +18,14 @@ build $chest_binary_dir/pro.o: cxx $chest_source_dir/pro.cpp
 build $chest_binary_dir/test_chest.o: cxx $chest_test_dir/test_chest.cpp
 
 # build binary
-build $chest_binary_dir/chepp: link $chest_binary_dir/chepp.o
+build $sysroot_bin/chepp: link $chest_binary_dir/chepp.o
 
-build $chest_binary_dir/bin/_chest/command/init: link $chest_binary_dir/init.o
-build $chest_binary_dir/bin/_chest/command/new: link $chest_binary_dir/new.o
+build $sysroot_bin/_chest/command/init: link $chest_binary_dir/init.o
+build $sysroot_bin/_chest/command/new: link $chest_binary_dir/new.o
 
-build $chest_binary_dir/bin/_chest/new_type/pro: link $chest_binary_dir/pro.o
-build $chest_binary_dir/bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
+build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o
+build $sysroot_bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
 
 
-build $chest_binary_dir/etc/chest/: cp $chest_etc_dir/templates
+build $sysroot_etc/chest/: cp $chest_etc_dir/templates
 
