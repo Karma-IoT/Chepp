@@ -1,6 +1,6 @@
 #include "placeholder.h"
 
-string &placeholder(string &str) {
+string &placeholder::replace(string &str) {
     if (auto prefix = string::npos;
             str.find("$#<") != string::npos) {
         auto suffix = str.find(">");
@@ -22,3 +22,12 @@ string &placeholder(string &str) {
     }
     return str;
 }
+
+void placeholder::set_var(const string &name,const string &val) {
+    this -> vars[name] = val;
+}
+
+void placeholder::set_op(const string &name,const function<string&(string&)> &op) {
+    this -> ops[name] = op;
+}
+
