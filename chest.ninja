@@ -27,5 +27,5 @@ build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o
 build $sysroot_bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
 
 
-build $sysroot_etc/chest/: cp $chest_etc_dir/templates
+build $sysroot_etc/chest/: install $chest_etc_dir/templates
 
