@@ -19,6 +19,7 @@ public:
     void set_op(const string &name,const function<string&(string&)> &op);
 
     string &eval(string &str);
+    string &set(string &str);
 private:
     map<string,string> vars;
     map<string,function<string&(string&)>> ops;

@@ -19,7 +19,7 @@ string &placeholder::eval(string &str) {
         if (buffer.empty()) {
             buffer = "";
         } else if (buffer[0] == '$') {
-            buffer = vars[trim(exp[0])];
+            buffer = vars[trim(buffer).earse(0,1)];
         }
         for (int i = 1; i != exp.size(); i++) {
             auto op = this -> ops[trim(exp[i])];
@@ -38,7 +38,11 @@ void placeholder::set_op(const string &name,const function<string&(string&)> &op
     this -> ops[name] = op;
 }
 
-//void 
+string &placeholer::set(string &str) {
+    auto vec = split(str,"=");
+    this -> set_var(trim(vec[0]), trim(vec[1]);
+    return "";
+}
 
 }
 
