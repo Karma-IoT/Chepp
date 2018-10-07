@@ -1,6 +1,14 @@
 #ifndef _PLACEHOLDER_H
 #define _PLACEHOLDER_H
 
+#include <string>
+#include <functional>
+#include <map>
+
+using namespace std;
+
+namespace chepp {
+
 class placeholder {
 public:
     placeholder() = default;
@@ -14,5 +22,7 @@ private:
     map<string,string> vars;
     map<string,function<string&(string&)>> ops;
 };
+
+}
 
 #endif

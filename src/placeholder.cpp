@@ -1,24 +1,27 @@
 #include "placeholder.h"
 
+#include <iostream>
+
+#include "utils.h"
+
+using namespace std;
+using namespace chepp;
+
+namespace chepp {
+    
 string &placeholder::replace(string &str) {
-    if (auto prefix = string::npos;
-            str.find("$#<") != string::npos) {
-        auto suffix = str.find(">");
-        auto express = str.substr(prefix + 3,suffix - prefix - 3);
-        auto sem0 = string::npos;
-        auto sem1 = string::npos;
-        vector<string> exp;
-        do {
-            sem0 = sem1;
-            sem1 = express.find("|");
-            exp.push_back(express.substr(sem0,sem1 - sem0));
-        } while (sem != npos);
-        // deal vector
-        str = this -> vars[str];
+    auto prefix = string::npos;
+    while ((prefix = str.find("$#<")) != string::npos) {
+        auto suffix = str.find(">",prefix + 3);
+        auto express = str.substr(prefix + 3,suffix - (prefix + 3));
+        auto exp = split(express, "|");
+        
+        auto buffer = this -> vars[trim(exp[0])];
         for (int i = 1; i != exp.size(); i++) {
-            auto op = this -> ops;
-            str = op(str);
+            auto op = this -> ops[trim(exp[i])];
+            buffer = op(buffer);
         }
+        str = str.replace(prefix,suffix + 1,buffer);
     }
     return str;
 }
@@ -29,5 +32,7 @@ void placeholder::set_var(const string &name,const string &val) {
 
 void placeholder::set_op(const string &name,const function<string&(string&)> &op) {
     this -> ops[name] = op;
+}
+
 }
 

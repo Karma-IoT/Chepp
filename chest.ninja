@@ -2,13 +2,14 @@ chest_source_dir = src
 chest_binary_dir = build
 chest_etc_dir = etc
 chest_test_dir = test
-sysroot = ~/.chest
+sysroot = /home/tiannian/.chest
 sysroot_bin = $sysroot/bin
 sysroot_etc = $sysroot/etc
 
 # build object
 build $chest_binary_dir/chepp.o: cxx $chest_source_dir/chepp.cpp
 build $chest_binary_dir/chest.o: cxx $chest_source_dir/chest.cpp
+build $chest_binary_dir/placeholder.o: cxx $chest_source_dir/placeholder.cpp
 
 build $chest_binary_dir/init.o: cxx $chest_source_dir/init.cpp
 build $chest_binary_dir/new.o: cxx $chest_source_dir/new.cpp
@@ -16,6 +17,7 @@ build $chest_binary_dir/new.o: cxx $chest_source_dir/new.cpp
 build $chest_binary_dir/pro.o: cxx $chest_source_dir/pro.cpp
 
 build $chest_binary_dir/test_chest.o: cxx $chest_test_dir/test_chest.cpp
+build $chest_binary_dir/test_placeholder.o: cxx $chest_test_dir/test_placeholder.cpp
 
 # build binary
 build $sysroot_bin/chepp: link $chest_binary_dir/chepp.o
@@ -24,8 +26,10 @@ build $sysroot_bin/_chest/command/init: link $chest_binary_dir/init.o
 build $sysroot_bin/_chest/command/new: link $chest_binary_dir/new.o
 
 build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o
+
 build $sysroot_bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
+build $sysroot_bin/test_placeholder: link $chest_binary_dir/test_placeholder.o $chest_binary_dir/placeholder.o
 
 
-build $sysroot_etc/chest/: install $chest_etc_dir/templates
+build $sysroot_etc/chest/templates: install $chest_etc_dir/templates
 
