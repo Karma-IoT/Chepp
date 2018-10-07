@@ -1,4 +1,4 @@
-# %brief% chest.toml for C project.
+# $#<chest.toml for C project. | set(brief)>
 [project]
 name = %name%
 family = %family%

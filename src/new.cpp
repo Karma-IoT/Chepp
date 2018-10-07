@@ -37,7 +37,10 @@ void list_templates() {
         "etc" / "chest" / "templates";
     cout << "  type |   class   | description" << endl;
     for (auto& c: filesystem::directory_iterator(templates_path)) {
-        ifstream ifs(c.path());
+        auto file = c.path();
+        cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
+             << right << setw(11) << file.stem().string() << "|" << endl;
+        /*ifstream ifs(c.path());
         string commit;
         getline(ifs,commit);
         auto pos = commit.find("%brief%");
@@ -45,7 +48,7 @@ void list_templates() {
         cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
              << right << setw(11) << file.stem().string() << "|"
              << commit.erase(0,pos).erase(0,7) << endl;
-        ifs.close();
+        ifs.close();*/
     }
     cout << endl;
 }
@@ -100,7 +103,7 @@ int main(int argc, char *argv[]) {
         }
     }
     check_args(args);
-	if( args.del ) {
+    if( args.del ) {
         auto path = filesystem::path(getenv("CHEST_SYSROOT")) /
             "etc" / "chest" / "templates" / args.name;
         if(filesystem::exists(path)) {
