@@ -17,7 +17,8 @@ public:
 public:
     void set_var(const string &name,const string &val);
     void set_op(const string &name,const function<string&(string&)> &op);
-    string &replace(string &str);
+
+    string &eval(string &str);
 private:
     map<string,string> vars;
     map<string,function<string&(string&)>> ops;
