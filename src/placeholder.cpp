@@ -2,9 +2,6 @@
 
 #include "utils.h"
 
-using namespace std;
-using namespace chepp;
-
 namespace chepp {
     
 string &placeholder::eval(string &str) {

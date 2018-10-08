@@ -7,6 +7,7 @@
 #include <iomanip>
 
 #include "utils.h"
+#include "placeholder.h"
 
 using namespace std;
 using namespace chepp;
@@ -38,17 +39,18 @@ void list_templates() {
     cout << "  type |   class   | description" << endl;
     for (auto& c: filesystem::directory_iterator(templates_path)) {
         auto file = c.path();
-        cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
-             << right << setw(11) << file.stem().string() << "|" << endl;
-        /*ifstream ifs(c.path());
+        ifstream ifs(c.path());
         string commit;
         getline(ifs,commit);
-        auto pos = commit.find("%brief%");
-        auto file = c.path();
+        placeholder p;
+        p.set_op("set",[&p](string &str) -> string &{
+            return p.set(str);
+        });
+        p.eval(commit);
         cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
              << right << setw(11) << file.stem().string() << "|"
-             << commit.erase(0,pos).erase(0,7) << endl;
-        ifs.close();*/
+             << p.vars["brief"] << endl;
+        ifs.close();
     }
     cout << endl;
 }

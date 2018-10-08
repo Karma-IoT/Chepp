@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     
     cout << "Description: ";
     getline(cin,project.description);
+    
     ifstream ifs(target);
     ofstream ofs("chest.pro");
     string buffer;
