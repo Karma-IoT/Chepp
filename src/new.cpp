@@ -37,6 +37,7 @@ void list_templates() {
     auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
         "etc" / "chest" / "templates";
     cout << "  type |   class   | description" << endl;
+    cout << " ------|-----------|------------" << endl;
     for (auto& c: filesystem::directory_iterator(templates_path)) {
         auto file = c.path();
         ifstream ifs(c.path());

@@ -1,0 +1,9 @@
+// $#<brief = project config header template. | set>
+#ifndef $#<$project.name | upper>_$#<$file.name | upper>_H
+#define $#<$project.name | upper>_$#<$file.name | upper>_H
+    
+#define PROJECT_NAMESPACE $#<$project.name>
+// add declaration
+
+
+#endif

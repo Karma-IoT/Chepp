@@ -22,7 +22,7 @@ string &placeholder::eval(string &str) {
                 buffer = op(buffer);
             }
         }
-        str = str.replace(prefix,suffix + 1,buffer);
+        str = str.replace(prefix,suffix - prefix + 1,buffer);
     }
     return str;
 }

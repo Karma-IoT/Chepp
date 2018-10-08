@@ -7,7 +7,7 @@
 namespace chepp {
 
 chest_t::chest_t(filesystem::path ctoml) {
-    auto config = cpptoml::parse_file("chest.toml");
+    auto config = cpptoml::parse_file(ctoml);
     auto project = config->get_table("project");
     auto name = project->get_as<string>("name");
     auto family = project->get_as<string>("family");

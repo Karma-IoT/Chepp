@@ -12,20 +12,15 @@ bool is_option(const string &argv) {
 
 filesystem::path find_root() {
     auto &&current = filesystem::current_path();
-    do {
+    while (!filesystem::exists(current / "chest.pro") && current.root_directory() != filesystem::path("/")) {
+        cout << current << endl;
         current = current.parent_path();
-    }while (!filesystem::exists(current / "chest.toml") && current.has_parent_path());
-    if (current.has_parent_path()) {
-        cerr << "Error! Can not find chest.toml" << endl;
+    } ;
+    if (current.root_directory() != filesystem::path("/")) {
+        cerr << "Error! Can not find chest.pro" << endl;
         exit(EXIT_FAILURE);
     }
     return current;
-}
-
-void replace_str(string &buffer,const string &search, const string &str) {
-    if (auto pos = string::npos; !((pos = buffer.find(search)) == string::npos ) ) {
-        buffer.replace(pos, search.size(), str);
-    }
 }
 
 vector<string> split(const string &express, const string &sep) {

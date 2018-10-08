@@ -16,6 +16,7 @@ build $chest_binary_dir/init.o: cxx $chest_source_dir/init.cpp
 build $chest_binary_dir/new.o: cxx $chest_source_dir/new.cpp
 
 build $chest_binary_dir/pro.o: cxx $chest_source_dir/pro.cpp
+build $chest_binary_dir/src.o: cxx $chest_source_dir/src.cpp
 
 build $chest_binary_dir/test_chest.o: cxx $chest_test_dir/test_chest.cpp
 build $chest_binary_dir/test_placeholder.o: cxx $chest_test_dir/test_placeholder.cpp
@@ -27,6 +28,8 @@ build $sysroot_bin/_chest/command/init: link $chest_binary_dir/init.o $chest_bin
 build $sysroot_bin/_chest/command/new: link $chest_binary_dir/new.o $chest_binary_dir/placeholder.o $chest_binary_dir/utils.o
 
 build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o $chest_binary_dir/utils.o $chest_binary_dir/placeholder.o
+
+build $sysroot_bin/_chest/new_type/src: link $chest_binary_dir/src.o $chest_binary_dir/utils.o  $chest_binary_dir/chest.o $chest_binary_dir/placeholder.o
 
 build $sysroot_bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
 build $sysroot_bin/test_placeholder: link $chest_binary_dir/test_placeholder.o $chest_binary_dir/placeholder.o $chest_binary_dir/utils.o

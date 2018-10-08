@@ -1,0 +1,7 @@
+// $#<brief = C++ header template. | set>
+#ifndef $#<$project.name | upper>_$#<$file.name | upper>_H
+#define $#<$project.name | upper>_$#<$file.name | upper>_H
+    
+// add declaration
+
+#endif
