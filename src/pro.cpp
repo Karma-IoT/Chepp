@@ -4,6 +4,7 @@
 
 #include "chest.h"
 #include "utils.h"
+#include "placeholder.h"
 
 using namespace std;
 using namespace chepp;
@@ -45,10 +46,11 @@ int main(int argc, char *argv[]) {
     cout << "Description: ";
     getline(cin,project.description);
     
-    cout << "Maintainer(s): ";
+    cout << "First Maintainer: ";
     // TODO: get default maintainer from configs.
     string maintainer;
     getline(cin,maintainer);
+    if (maintainer != "")
     project.maintainer.push_back(maintainer);
     if(maintainer != ""){
         while(maintainer != "") {
@@ -60,7 +62,7 @@ int main(int argc, char *argv[]) {
     }
 
 #define chest_with_default(label,item) \
-    cout << label <<": (general) "; \
+    cout << label <<" (general): "; \
     string item; \
     getline(cin,item); \
     if (item == "") \
@@ -80,29 +82,44 @@ int main(int argc, char *argv[]) {
     chest_with_default("Vendor",vendor);
     chest_with_default("Framework",framework);
     chest_with_default("OS",OS);
-    chest_with_default("compiler",compiler);
+    chest_with_default("Compiler",compiler);
 
+    placeholder p;
+    p.set_var("project.name","\"" + project.name + "\"");
+    p.set_var("project.family","\"" + project.family + "\"");
+    p.set_var("project.version","\"" + project.version + "\"");
+    p.set_op("set",[&p](string &str) -> string & { return p.set(str);});
     
-    
-    
-    for (const auto &x: project.arch) {
-        cout << x << endl;
+#define array_serde(label,item) \
+    { \
+        string buffer = "[ "; \
+        for (const auto &x: item) { \
+            buffer += "\""; \
+            buffer += x; \
+            buffer += "\""; \
+        } \
+        buffer += " ]"; \
+        p.set_var(label,buffer); \
     }
     
-    /*ifstream ifs(target);
+    array_serde("project.maintainer",project.maintainer);
+    array_serde("project.arch",project.arch);
+    array_serde("project.vendor",project.vendor);
+    array_serde("project.framework",project.framework);
+    array_serde("project.OS",project.OS);
+    array_serde("project.compiler",project.compiler);
+    
+    ifstream ifs(target);
     ofstream ofs("chest.pro");
     string buffer;
+    
     while(!ifs.eof()) {
         getline(ifs,buffer);
-        auto pos = string::npos;
-        replace_str(buffer, "%name%", "\"" +project.name + "\"");
-        replace_str(buffer, "%family%", "\"" +project.family + "\"");
-        replace_str(buffer, "%version%", "\"" +project.version + "\"");
-        replace_str(buffer, "%description%", "\"" +project.description + "\"");
-        if (buffer.find("%brief%") == string::npos) {
-            ofs << buffer << endl;
-        }
+        
+        buffer = p.eval(buffer);
+        
+        ofs << buffer << endl;
     }
-    */
+    
     return 0;
 }

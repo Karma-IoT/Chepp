@@ -26,7 +26,7 @@ build $sysroot_bin/chepp: link $chest_binary_dir/chepp.o $chest_binary_dir/utils
 build $sysroot_bin/_chest/command/init: link $chest_binary_dir/init.o $chest_binary_dir/utils.o
 build $sysroot_bin/_chest/command/new: link $chest_binary_dir/new.o $chest_binary_dir/placeholder.o $chest_binary_dir/utils.o
 
-build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o $chest_binary_dir/utils.o
+build $sysroot_bin/_chest/new_type/pro: link $chest_binary_dir/pro.o $chest_binary_dir/utils.o $chest_binary_dir/placeholder.o
 
 build $sysroot_bin/test_chest: link $chest_binary_dir/test_chest.o $chest_binary_dir/chest.o
 build $sysroot_bin/test_placeholder: link $chest_binary_dir/test_placeholder.o $chest_binary_dir/placeholder.o $chest_binary_dir/utils.o

@@ -18,7 +18,9 @@ string &placeholder::eval(string &str) {
         }
         for (int i = 1; i != exp.size(); i++) {
             auto op = this -> ops[trim(exp[i])];
-            buffer = op(buffer);
+            if (op) {
+                buffer = op(buffer);
+            }
         }
         str = str.replace(prefix,suffix + 1,buffer);
     }
