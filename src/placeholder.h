@@ -20,7 +20,7 @@ public:
 
     string &eval(string &str);
     string &set(string &str);
-private:
+public:
     map<string,string> vars;
     map<string,function<string&(string&)>> ops;
 };

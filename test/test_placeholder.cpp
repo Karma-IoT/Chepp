@@ -8,18 +8,12 @@ using namespace chepp;
 
 int main() {
     placeholder p;
-    p.set_var("hello", "teasdasf  asdasfsdf st");
-    p.set_var("hello1", "test1");
-    p.set_op("upper",[](string &str) -> string& {
-        transform(str.begin(),str.end(),str.begin(),::toupper);
-        return str;
-    });
-    p.set_op("test",[](string &str) -> string& {
-        cout << str << endl;
-        return str;
+    p.set_op("set",[&p](string &str)->string &{
+        return p.set(str);
     });
     
-    string buf("$#<heasdasdasf asdad llo | test | upper> $#<$hello1 | test >");
+    string buf("sdafsf$#<test = hello | set>");
     cout << p.eval(buf) << endl;
+    cout << p.vars["test"] << endl;
     return 0;
 }

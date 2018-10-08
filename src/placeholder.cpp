@@ -1,7 +1,5 @@
 #include "placeholder.h"
 
-#include <iostream>
-
 #include "utils.h"
 
 using namespace std;
@@ -19,7 +17,7 @@ string &placeholder::eval(string &str) {
         if (buffer.empty()) {
             buffer = "";
         } else if (buffer[0] == '$') {
-            buffer = vars[trim(buffer).earse(0,1)];
+            buffer = vars[trim(buffer).erase(0,1)];
         }
         for (int i = 1; i != exp.size(); i++) {
             auto op = this -> ops[trim(exp[i])];
@@ -38,10 +36,11 @@ void placeholder::set_op(const string &name,const function<string&(string&)> &op
     this -> ops[name] = op;
 }
 
-string &placeholer::set(string &str) {
+string &placeholder::set(string &str) {
     auto vec = split(str,"=");
-    this -> set_var(trim(vec[0]), trim(vec[1]);
-    return "";
+    this -> set_var(trim(vec[0]), trim(vec[1]));
+    str = "";
+    return str;
 }
 
 }
