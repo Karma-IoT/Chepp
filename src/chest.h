@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <vector>
+#include <set>
 #include <map>
 #include <string>
 
@@ -33,8 +34,11 @@ public:
     string version;
     string description;
     vector<string> maintainer;
-    vector<string> upstream;
-    vector<string> platform;
+    set<string> arch;
+    set<string> vendor;
+    set<string> framework;
+    set<string> OS;
+    set<string> compiler;
 private:
     filesystem::path source;
     map<string,filesystem::path> binary;

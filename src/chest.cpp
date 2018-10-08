@@ -24,13 +24,26 @@ chest_t::chest_t(filesystem::path ctoml) {
     for (auto &x: *maintainers) {
         this -> maintainer.push_back(x);
     }
-    auto upstream = project->get_array_of<string>("upstream");
-    for (auto &x: *upstream) {
-        this -> upstream.push_back(x);
+    
+    auto arch = project->get_array_of<string>("arch");
+    for (auto &x: *arch) {
+        this -> arch.insert(x);
     }
-    auto platform = project->get_array_of<string>("platform");
-    for (auto &x: *platform) {
-        this -> upstream.push_back(x);
+    auto vendor = project->get_array_of<string>("vendor");
+    for (auto &x: *vendor) {
+        this -> vendor.insert(x);
+    }
+    auto framework = project->get_array_of<string>("framework");
+    for (auto &x: *framework) {
+        this -> framework.insert(x);
+    }
+    auto OS = project->get_array_of<string>("OS");
+    for (auto &x: *OS) {
+        this -> OS.insert(x);
+    }
+    auto compiler = project->get_array_of<string>("compiler");
+    for (auto &x: *compiler) {
+        this -> compiler.insert(x);
     }
 }
 

@@ -45,7 +45,51 @@ int main(int argc, char *argv[]) {
     cout << "Description: ";
     getline(cin,project.description);
     
-    ifstream ifs(target);
+    cout << "Maintainer(s): ";
+    // TODO: get default maintainer from configs.
+    string maintainer;
+    getline(cin,maintainer);
+    project.maintainer.push_back(maintainer);
+    if(maintainer != ""){
+        while(maintainer != "") {
+            cout << "Next maintainer: ";
+            getline(cin,maintainer);
+            if (maintainer != "")
+                project.maintainer.push_back(maintainer);
+        }
+    }
+
+#define chest_with_default(label,item) \
+    cout << label <<": (general) "; \
+    string item; \
+    getline(cin,item); \
+    if (item == "") \
+        project.item.insert("general"); \
+    else \
+        project.item.insert(item); \
+    if (item != "general") { \
+        while(item != "") { \
+            cout << "Next " << label << ": "; \
+            getline(cin,item); \
+            if (item != "") \
+                project.arch.insert(item); \
+        } \
+    }
+    
+    chest_with_default("Architecture",arch);
+    chest_with_default("Vendor",vendor);
+    chest_with_default("Framework",framework);
+    chest_with_default("OS",OS);
+    chest_with_default("compiler",compiler);
+
+    
+    
+    
+    for (const auto &x: project.arch) {
+        cout << x << endl;
+    }
+    
+    /*ifstream ifs(target);
     ofstream ofs("chest.pro");
     string buffer;
     while(!ifs.eof()) {
@@ -59,5 +103,6 @@ int main(int argc, char *argv[]) {
             ofs << buffer << endl;
         }
     }
+    */
     return 0;
 }

@@ -18,13 +18,6 @@ int main() {
         cout << x << endl;
     }
     
-    for (const auto &x: chest.upstream) {
-        cout << x << endl;
-    }
-    
-    for (const auto &x: chest.platform) {
-        cout << x << endl;
-    }
     
     return 0;
 }
