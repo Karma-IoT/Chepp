@@ -42,14 +42,22 @@ int main(int argc, char *argv[]) {
         }
         return str;
     });
+    p.set_op("cast(.,_)", [](string &str) -> string & {
+        for (auto p = str.begin(); p != str.end(); p++){
+            if (*p == '.')
+                *p = '_';
+        }
+        return str;
+    });
     p.set_var("project.name",chest.name);
     p.set_var("file.name",name);
     
     ifstream ifs(target);
     auto spiled = split(cls,".");
-    auto srcpath = proot / "src/" / (name + "." + spiled[0]);
+    //auto srcpath = proot / "src/" / (name + "." + spiled[0]);
+    auto srcpath = proot / "src/" / name;
     
-    p.set_var("file.path",relative(srcpath,proot / "src").replace_extension(""));
+    p.set_var("file.path",relative(srcpath,proot / "src"));
     
     auto srcdir = srcpath;
     
@@ -69,10 +77,5 @@ int main(int argc, char *argv[]) {
         buffer = p.eval(buffer);
         ofs << buffer << endl;
     }
-    
-    /*
-    cout << "Use " << target.filename().string() << " to initial project" << endl;
-
-*/
     return 0;
 }
