@@ -12,11 +12,10 @@ bool is_option(const string &argv) {
 
 filesystem::path find_root() {
     auto &&current = filesystem::current_path();
-    while (!filesystem::exists(current / "chest.pro") && current.root_directory() != filesystem::path("/")) {
-        cout << current << endl;
+    while (!filesystem::exists(current / "chest.pro") && current.root_directory() != current) {
         current = current.parent_path();
     } ;
-    if (current.root_directory() != filesystem::path("/")) {
+    if (current.root_directory() == current) {
         cerr << "Error! Can not find chest.pro" << endl;
         exit(EXIT_FAILURE);
     }

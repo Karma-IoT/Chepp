@@ -1,7 +1,13 @@
 // $#<brief = C++ header template. | set>
-#ifndef $#<$project.name | upper>_$#<$file.name | upper>_H
-#define $#<$project.name | upper>_$#<$file.name | upper>_H
-    
+#ifndef $#<$project.name | upper>_$#<$file.path | cast(/,_) | upper>_H
+#define $#<$project.name | upper>_$#<$file.path | cast(/,_) | upper>_H
+
+#include "config.h"
+
+namespace PROJECT_NAMESPACE {
+
 // add declaration
+
+}
 
 #endif

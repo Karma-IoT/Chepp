@@ -21,6 +21,7 @@ int main(int argc, char *argv[]) {
     auto proot = find_root();
     chest_t chest(proot / "chest.pro");
     
+    
     auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
         "etc/chest/templates" / (cls + ".src");
 
@@ -34,16 +35,33 @@ int main(int argc, char *argv[]) {
         transform(str.begin(),str.end(),str.begin(),::toupper);
         return str;
     });
+    p.set_op("cast(/,_)", [](string &str) -> string & {
+        for (auto p = str.begin(); p != str.end(); p++){
+            if (*p == '/')
+                *p = '_';
+        }
+        return str;
+    });
     p.set_var("project.name",chest.name);
     p.set_var("file.name",name);
     
     ifstream ifs(target);
     auto spiled = split(cls,".");
-    auto srcpath = name + "." + spiled[0];
+    auto srcpath = proot / "src/" / (name + "." + spiled[0]);
+    
+    p.set_var("file.path",relative(srcpath,proot / "src").replace_extension(""));
+    
+    auto srcdir = srcpath;
+    
+    if (!filesystem::exists(srcdir.remove_filename()))
+        create_directory(srcdir);
+    
+    
     if (filesystem::exists(srcpath)) {
         cerr << "Error! Target file already exists." << endl;
         exit(EXIT_FAILURE);
     }
+    
     ofstream ofs(srcpath);
     string buffer;
     while(!ifs.eof()) {
