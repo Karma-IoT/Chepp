@@ -21,7 +21,7 @@ void print_help() {
     cout << "usage: chepp [-v|--version] [-h|--help] <subcommand> [<args>]" << endl;
     cout << endl;
     cout << "Chest is an universal packages manager." << endl;
-    cout << "Chepp is an implemention for Chest" << endl;
+    cout << "Chepp is an implemention for Chest." << endl;
     cout << endl;
     cout << "Available subcommands:" << endl;
     auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
