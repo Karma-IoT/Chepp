@@ -35,7 +35,8 @@ void print_brief() {
 void list_templates() {
     cout << "All available templates:" << endl;
     auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "etc" / "chest" / "templates";
+        "etc/chest/templates";
+    cout << endl;
     cout << "  type |   class   | description" << endl;
     cout << " ------|-----------|------------" << endl;
     for (auto& c: filesystem::directory_iterator(templates_path)) {
@@ -108,7 +109,7 @@ int main(int argc, char *argv[]) {
     check_args(args);
     if( args.del ) {
         auto path = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "etc" / "chest" / "templates" / args.name;
+            "etc/chest/templates" / args.name;
         if(filesystem::exists(path)) {
             remove(path);
             return 0;
@@ -120,7 +121,7 @@ int main(int argc, char *argv[]) {
     
 	if( args.add ) {
         auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "etc" / "chest" / "templates" / args.name;
+            "etc/chest/templates" / args.name;
         auto origin = filesystem::path(args.name);
         if(filesystem::exists(target)) {
             cout << "Error! Template already exists." << endl;

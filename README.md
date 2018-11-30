@@ -24,20 +24,12 @@ The current directory needs to exist `chest.toml`.
 #### New file(s)
 
 ``` shell
-$ chepp new [-t/--type <pro|h|c|cpp|cls> ] <name>
+$ chepp new [-t/--type] <pro|h|c|cpp|cls> [-c/--cls] <class>  <path>
 ```
 
-This subcommand will invoke `${CHEST_SYSROOT_BIN}/commands/${type}`. 
+This subcommand will use the template [-t/--type] and class [-c/--cls] to create file(s) at the specified location.
 
-`${type}` is `-t`'s value.
-
-#### Publish project
-
-``` shell
-$ chepp publish <remote name>
-```
-
-`<remote name>` is managed by remote subcommand.
+This subcommand will invoke `${CHEST_SYSROOT}/bin/commands/${type}`. 
 
 #### Build project
 
@@ -45,7 +37,7 @@ $ chepp publish <remote name>
 $ chepp build [-a/--all] [-d/--debug] [-r/-release] [-t/--test] [-e/--example]
 ```
 
-Build project's specified target
+Build project's specified target.
 
 #### Running target
 
@@ -73,6 +65,14 @@ Upload the specified target to device.
 
 These devices are recorded in the `device`  section in configuration.
 
+#### Remote manage
+
+```shell
+$ chepp publish <remote name>
+```
+
+`<remote name>` is managed by remote subcommand.
+
 ### Global commands
 
 #### Configure
@@ -85,6 +85,9 @@ $ shepp config get <section name> <key>
 $ shepp config set <section name> <key>=<value>
 ```
 
+## Environment Variable
+
+- `CHEST_SYSROOT`  the path of source code and binary file. Default value is `~/.chest`.
 
 ## Reference
 
