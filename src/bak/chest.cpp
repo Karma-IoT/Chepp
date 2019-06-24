@@ -2,7 +2,7 @@
 
 #include <iostream>
 
-#include "cpptoml/src/cpptoml.h"
+#include "cpptoml.h"
 
 namespace chepp {
 

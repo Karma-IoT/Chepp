@@ -7,7 +7,7 @@
 #include <iomanip>
 
 #include "utils.h"
-#include "placeholder.h"
+#include "ecode/src/ecode.h"
 
 using namespace std;
 using namespace chepp;
@@ -29,31 +29,34 @@ void print_help() {
 }
 
 void print_brief() {
-    cout << "  new        create some file(s) from template." << endl;
+    cout << "create some file(s) from template." << endl;
 }
 
 void list_templates() {
     cout << "All available templates:" << endl;
     auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "etc" / "chest" / "templates";
-    cout << "  type |   class   | description" << endl;
-    cout << " ------|-----------|------------" << endl;
-    for (auto& c: filesystem::directory_iterator(templates_path)) {
-        auto file = c.path();
-        ifstream ifs(c.path());
-        string commit;
-        getline(ifs,commit);
-        placeholder p;
-        p.set_op("set",[&p](string &str) -> string &{
-            return p.set(str);
-        });
-        p.eval(commit);
-        cout << "  " << right << setw(5)  << file.extension().string().erase(0,1) << "|"
-             << right << setw(11) << file.stem().string() << "|"
-             << p.vars["brief"] << endl;
-        ifs.close();
+        "etc/chest/templates";
+    if (! filesystem::exists(templates_path)) {
+        cerr << "Can't find templates directory under CHEST_SYSROOT" << endl;
+        exit(EXIT_FAILURE);
+    } else {
+        cout << "  type |   class   | description" << endl;
+        cout << " ------|-----------|------------" << endl;
+        for (auto& c: filesystem::directory_iterator(templates_path)) {
+            auto file = c.path();
+            ifstream ifs(c.path());
+            string commit;
+            getline(ifs,commit);
+            ecode p;
+            p.eval(commit);
+            auto r = split(file.filename().string(),".");
+            cout << "  " << right << setw(5)  << r[0] << "|"
+                 << left << setw(11) << r[1] << "|"
+                 << p.vars["brief"] << endl;
+            ifs.close();
+        }
+        cout << endl;   
     }
-    cout << endl;
 }
 
 struct args_t {
@@ -120,7 +123,7 @@ int main(int argc, char *argv[]) {
     
 	if( args.add ) {
         auto target = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "etc" / "chest" / "templates" / args.name;
+            "etc/chest/templates" / args.name;
         auto origin = filesystem::path(args.name);
         if(filesystem::exists(target)) {
             cout << "Error! Template already exists." << endl;
@@ -134,7 +137,8 @@ int main(int argc, char *argv[]) {
         if(args.cls == "") 
             args.cls = "default";
         auto comexec = filesystem::path(getenv("CHEST_SYSROOT")) /
-            "bin/_chest/new_type" / args.type;
+            "bin/chest/command/new_types" / args.type;
+        cout << comexec << endl;
         if(!filesystem::exists(comexec)) {
             cout << "Error! Template type does not exist." << endl;
             exit(EXIT_FAILURE);

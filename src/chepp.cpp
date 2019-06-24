@@ -3,6 +3,8 @@
 #include <vector>
 #include <string>
 #include <filesystem>
+#include <cstdio>
+#include <iomanip>
 
 #include "utils.h"
 
@@ -23,17 +25,33 @@ void print_help() {
     cout << "Chest is an universal packages manager." << endl;
     cout << "Chepp is an implemention for Chest." << endl;
     cout << endl;
-    cout << "Available subcommands:" << endl;
-    auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
-        / "bin" / "_chest" / "command";
-    for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
-        system((c.path().string() + " --brief").c_str());
-    }
-    cout << endl;
+    
     cout << "Available options:" << endl;
     cout << "  -h, --help      show this help message." << endl;
     cout << "  -v, --version   version." << endl;
     cout << endl;
+    
+    auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
+        / "bin" / "chest" / "command";
+    cout << "Available subcommands:" << endl;
+    if (! filesystem::exists(sysroot_subcommand)) {
+        cerr << "Can't find command directory under CHEST_SYSROOT" << endl;
+        exit(EXIT_FAILURE);
+    } else {
+        for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
+            FILE *p = popen((c.path().string() + " --brief").c_str(),"r");
+            if (p == NULL) {
+                cout << (c.path().string() + " --brief") << endl;
+            } else {
+                char tmp[1024];
+                fgets(tmp,1024,p);
+                cout << "  " << left << setw(6) << c.path().filename().string()
+                     << " "<< tmp;
+                fclose(p);
+            }
+        }
+        cout << endl;
+    }
 }
 
 void print_version() {
@@ -71,7 +89,7 @@ int main(int argc, char *argv[]) {
 	
 	if (!subcommand.empty()) {
 		auto subc = filesystem::path(getenv("CHEST_SYSROOT"))
-			/ "bin" / "_chest" / "command" / subcommand[0];
+			/ "bin" / "chest" / "command" / subcommand[0];
 		if (! filesystem::exists(subc)) {
 			cerr << "Subcommand does not exist" << endl;
 			print_help();
