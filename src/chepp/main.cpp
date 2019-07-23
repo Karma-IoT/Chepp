@@ -32,22 +32,24 @@ void print_help() {
     cout << endl;
     
     auto sysroot_subcommand = filesystem::path(getenv("CHEST_SYSROOT"))
-        / "bin" / "chest" / "command";
+        / "bin" / ".chest" / "commands";
     cout << "Available subcommands:" << endl;
     if (! filesystem::exists(sysroot_subcommand)) {
-        cerr << "Can't find command directory under CHEST_SYSROOT" << endl;
+        cerr << "Can't find command directory under ${CHEST_SYSROOT}" << endl;
         exit(EXIT_FAILURE);
     } else {
         for (auto& c: filesystem::directory_iterator(sysroot_subcommand)) {
-            FILE *p = popen((c.path().string() + " --brief").c_str(),"r");
-            if (p == NULL) {
-                cout << (c.path().string() + " --brief") << endl;
-            } else {
-                char tmp[1024];
-                fgets(tmp,1024,p);
-                cout << "  " << left << setw(6) << c.path().filename().string()
-                     << " "<< tmp;
-                fclose(p);
+            if (filesystem::is_regular_file(c) || filesystem::is_symlink(c)) {
+                FILE *p = popen((c.path().string() + " --brief").c_str(),"r");
+                if (p == NULL) {
+                    cout << (c.path().string() + " --brief") << endl;
+                } else {
+                    char tmp[1024];
+                    fgets(tmp,1024,p);
+                    cout << "  " << left << setw(6) << c.path().filename().string()
+                         << " "<< tmp;
+                    fclose(p);
+                }
             }
         }
         cout << endl;
@@ -85,16 +87,17 @@ int main(int argc, char *argv[]) {
 			break;
         }
     }
+
     // Find command and invoke
 	
 	if (!subcommand.empty()) {
 		auto subc = filesystem::path(getenv("CHEST_SYSROOT"))
-			/ "bin" / "chest" / "command" / subcommand[0];
+			/ "bin/.chest/commands" / subcommand[0];
 		if (! filesystem::exists(subc)) {
 			cerr << "Subcommand does not exist" << endl;
 			print_help();
             exit(EXIT_FAILURE);
-		} else {
+		} else if(filesystem::is_regular_file(subc) || filesystem::is_symlink(subc)) {
 			auto commstr = subc.string();
 			for (auto p = subcommand.cbegin() + 1; p != subcommand.cend(); p++) {
 				commstr.append(" ");

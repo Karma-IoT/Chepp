@@ -1,7 +1,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
@@ -32,48 +31,39 @@ void print_brief() {
     cout << "create some file(s) from template." << endl;
 }
 
-void list_templates() {
-    cout << "All available templates:" << endl;
-    auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
-        "etc/chest/templates";
+void list_templates(string name) {
     if (! filesystem::exists(templates_path)) {
         cerr << "Can't find templates directory under CHEST_SYSROOT" << endl;
         exit(EXIT_FAILURE);
+    }
+    auto templates_path = filesystem::path(getenv("CHEST_SYSROOT")) /
+        "etc/chest/templates";
+    if (name == "") {
+        // list all template
+        cout << "All available templates:" << endl;
     } else {
-        cout << "  type |   class   | description" << endl;
-        cout << " ------|-----------|------------" << endl;
-        for (auto& c: filesystem::directory_iterator(templates_path)) {
-            auto file = c.path();
-            ifstream ifs(c.path());
-            string commit;
-            getline(ifs,commit);
-            ecode p;
-            p.eval(commit);
-            auto r = split(file.filename().string(),".");
-            cout << "  " << right << setw(5)  << r[0] << "|"
-                 << left << setw(11) << r[1] << "|"
-                 << p.vars["brief"] << endl;
-            ifs.close();
+        // list template for type `name`
+        cout << "Available templates for " << name <<" :" << endl;
+        auto p = templates_path / name;
+        if (filesystem::exists(p) && filesystem::is_regular_file(p) && filesystem::is_symlink(p)) {
+            auto command_str = p.string() + " -l";
+            cout << command_str << endl;
         }
-        cout << endl;   
     }
 }
 
 struct args_t {
     string type;
     string cls;
-    bool add;
-    bool del;
     string name;
-    args_t():add(false),del(false){}
+
+    void parse(int argc, char *argv[]) {
+        if (argc == 1) {
+            print_help();
+        }
+    }
 };
 
-void check_args(const args_t &args) {
-    if(args.add & args.del) {
-        cerr << "Error! Add and delete cannot be set at the same time." << endl;
-        exit(EXIT_FAILURE);
-    }
-}
 int main(int argc, char *argv[]) {
     args_t args;
     if (argc == 1) {

@@ -1,17 +1,28 @@
 # Chepp
 > [Chest](https://github.com/Karma-IoT/Chest)'s C++ implementation
 
-> Chepp is a radical project. It use the most new standard and support decentralize sources.
+> Chepp is a radical project. It uses the newest standard and support decentralize sources.
 
 ## Dependencies
 
 - ninja
 - git
-- gcc < 7.1 (make)
+- gcc > 7.1 (make)
 
 ## Commands
 
-### Project commands
+### Project related commands
+
+#### New file(s)
+
+```shell
+$ chepp new [-t/--type <type>] [-c/-class <class>] [-l/--list] <name>
+```
+
+- `-t/--type` : type of new file, this command will invoke `${CHEST_SYSROOT}/bin/.chest/commands/<type>`, and then pass all arguments.
+- `-c/--class` : class of new file.
+- `-l/--list` : list all template for `<type>` or all.
+- 
 
 #### Initial project
 
@@ -19,17 +30,7 @@
 $ chepp init
 ```
 
-The current directory needs to exist `chest.toml`.
-
-#### New file(s)
-
-``` shell
-$ chepp new [-t/--type <pro|h|c|cpp|cls> ] <name>
-```
-
-This subcommand will invoke `${CHEST_SYSROOT_BIN}/commands/${type}`. 
-
-`${type}` is `-t`'s value.
+The current directory must exist `chest.toml`.
 
 #### Publish project
 
